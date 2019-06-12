@@ -1,5 +1,12 @@
-{ pkgs ? import <nixpkgs> {} }:
 let
+  fetcher = { owner, repo, rev, sha256 }: builtins.fetchTarball {
+    inherit sha256;
+    url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
+  };
+  versions = builtins.mapAttrs
+    (_: fetcher)
+    (builtins.fromJSON (builtins.readFile ./versions.json));
+  pkgs = import versions.nixpkgs {};
   padelude = pkgs.haskellPackages.mkDerivation {
     pname = "padelude";
     version = "2018-01-12";
