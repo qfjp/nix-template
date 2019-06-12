@@ -1,3 +1,4 @@
+{pkgs ? import <nixpkgs> {}}:
 let
   fetcher = { owner, repo, rev, sha256 }: builtins.fetchTarball {
     inherit sha256;
